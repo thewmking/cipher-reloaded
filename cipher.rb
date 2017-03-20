@@ -2,16 +2,26 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 
 get '/' do
-  "Hello world!"
+  message = "fine"
+  if message.to_s.empty? == true
+    message = "fine"
+    shift = 2
+  else
+    message = params['message'].to_s
+    shift_factor = params['shift_factor']
+    shift = shift_factor.to_i
+  end
+  cipher = "#{caesar_cipher(message, shift).join}"
+  erb :index, :locals => {:message => message, :shift_factor => shift_factor, :cipher => cipher}
 end
 
 
 puts "what is your message?"
-message = gets.chomp
+#message
 
 puts "what is your shift factor?"
-shift_factor = gets.chomp
-shift = shift_factor.to_i
+#shift_factor
+#shift = shift_factor.to_i
 
 def caesar_cipher(message, shift)
   alphabet = Array('a'..'z')
@@ -25,4 +35,4 @@ def caesar_cipher(message, shift)
   message.chars.map { |c| encrypter.fetch(c, c)}
 end
 
-puts caesar_cipher(message, shift).join
+#puts caesar_cipher(message, shift).join
